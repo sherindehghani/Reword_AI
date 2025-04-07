@@ -8,5 +8,4 @@ Reword AI is an AI-powered Chrome extension that helps you instantly translate, 
 🔹 Seamless Browsing Integration – Modify text directly on the page without copy-pasting.
 
 🚀 Reword AI – Smarter, Faster, and More Effective Text Enhancement!
-
  

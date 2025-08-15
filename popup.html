@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RewordAI</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>RewordAI</h1>
+            <p>AI-powered text enhancement</p>
+        </header>
+        
+        <main>
+            <div class="input-section">
+                <label for="textInput">Enter text to reword:</label>
+                <textarea id="textInput" placeholder="Paste your text here..."></textarea>
+            </div>
+            
+            <div class="controls">
+                <select id="styleSelect">
+                    <option value="professional">Professional</option>
+                    <option value="casual">Casual</option>
+                    <option value="creative">Creative</option>
+                    <option value="formal">Formal</option>
+                </select>
+                <button id="rewordBtn">Reword Text</button>
+            </div>
+            
+            <div class="output-section">
+                <label for="textOutput">Reworded text:</label>
+                <textarea id="textOutput" readonly placeholder="Reworded text will appear here..."></textarea>
+                <button id="copyBtn" disabled>Copy to Clipboard</button>
+            </div>
+        </main>
+        
+        <footer>
+            <div class="status" id="status"></div>
+        </footer>
+    </div>
+    
+    <script src="popup.js"></script>
+</body>
+</html> 

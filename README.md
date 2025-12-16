@@ -16,6 +16,7 @@ A powerful Chrome extension that uses AI to reword and enhance text content. Per
 
 ### For Development/Testing:
 
+
 1. **Clone or download this repository**
    ```bash
    git clone <repository-url>

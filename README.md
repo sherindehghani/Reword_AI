@@ -1,179 +1,167 @@
-# RewordAI Chrome Extension
+# RewordAI
 
-A powerful Chrome extension that uses AI to reword and enhance text content. Perfect for improving writing style, making text more professional, casual, creative, or formal.
+A Chrome extension that uses OpenAI GPT to reword and enhance text in multiple writing styles. Select text anywhere on the web, choose a tone, and get AI-powered rewrites instantly.
 
 ## Features
 
-- **Text Rewording**: Transform text into different styles (Professional, Casual, Creative, Formal)
-- **Smart Text Capture**: Select text on any webpage and reword it instantly
-- **Keyboard Shortcuts**: Quick access with Ctrl/Cmd + Shift + R
-- **Context Menu**: Right-click to reword selected text
-- **Auto-save**: Your text and preferences are automatically saved
-- **Copy to Clipboard**: One-click copying of reworded text
-- **Modern UI**: Beautiful, responsive interface with gradient design
+- **OpenAI GPT Integration** - Powered by GPT-4o Mini, GPT-4o, or GPT-3.5 Turbo (configurable)
+- **8 Writing Styles** - Professional, Casual, Creative, Formal, Academic, Simplified, Persuasive, Friendly
+- **Text Capture** - Select text on any webpage and send it to the extension with `Ctrl+Shift+R`
+- **Context Menu** - Right-click selected text and choose "Reword with RewordAI"
+- **Auto-save** - Input text and style preferences persist between sessions
+- **Settings Panel** - Manage your API key and model selection from the popup
+- **Keyboard Shortcuts** - `Ctrl+Enter` to reword, `Ctrl+Shift+R` to capture text from pages
+- **Copy to Clipboard** - One-click copy of the reworded output
+
+## Screenshots
+
+The extension popup features a clean, modern interface with:
+- Gradient header with settings gear icon
+- Collapsible settings panel for API key and model configuration
+- Input/output text areas with character count
+- Style dropdown and reword button
+- Status bar with keyboard shortcut hints
 
 ## Installation
 
-### For Development/Testing:
+### Prerequisites
 
+You need an OpenAI API key. Get one at [platform.openai.com/api-keys](https://platform.openai.com/api-keys).
 
-1. **Clone or download this repository**
+### Load the Extension
+
+1. Clone this repository:
    ```bash
-   git clone <repository-url>
-   cd rewordAI
+   git clone https://github.com/your-username/RewordAI.git
    ```
 
-2. **Add Extension Icons**
-   - Create PNG icons in the `icons/` directory:
-     - `icon16.png` (16x16)
-     - `icon32.png` (32x32)
-     - `icon48.png` (48x48)
-     - `icon128.png` (128x128)
-   - Or use the provided `create_icons.html` to generate them
+2. Open Chrome and navigate to `chrome://extensions/`
 
-3. **Load in Chrome**
-   - Open Chrome and go to `chrome://extensions/`
-   - Enable "Developer mode" (toggle in top right)
-   - Click "Load unpacked"
-   - Select the `rewordAI` folder
+3. Enable **Developer mode** (toggle in the top right)
 
-4. **Start Using**
-   - Click the extension icon in your toolbar
-   - Or select text on any webpage and use Ctrl/Cmd + Shift + R
+4. Click **Load unpacked** and select the `RewordAI` folder
 
-### For Production:
+5. Click the extension icon in your toolbar, open **Settings**, and enter your OpenAI API key
 
-1. **Create Icons**: Generate proper PNG icons
-2. **Update API Integration**: Replace placeholder text processing with real AI API
-3. **Package Extension**: Zip the folder and upload to Chrome Web Store
+### Icons
+
+The extension expects PNG icons at `icons/icon16.png`, `icon32.png`, `icon48.png`, and `icon128.png`. An SVG source (`icons/icon.svg`) is provided. You can convert it using any image editor or an online SVG-to-PNG converter.
 
 ## Usage
 
-### Basic Usage:
-1. Click the RewordAI extension icon
-2. Enter or paste text in the input field
-3. Select your desired style (Professional, Casual, Creative, Formal)
-4. Click "Reword Text"
-5. Copy the enhanced text to your clipboard
+### Basic
 
-### Advanced Usage:
-- **Select text on any webpage** and press `Ctrl/Cmd + Shift + R`
-- **Right-click selected text** and choose "Reword with AI"
-- **Use keyboard shortcuts**: `Ctrl/Cmd + Enter` to reword, `Ctrl/Cmd + C` to copy
+1. Click the RewordAI extension icon
+2. Type or paste text into the input area
+3. Select a writing style from the dropdown
+4. Click **Reword** (or press `Ctrl+Enter`)
+5. Copy the result with the copy button
+
+### Capture from Web Pages
+
+1. Select text on any webpage
+2. Press `Ctrl+Shift+R` to capture it, or right-click and choose **Reword with RewordAI**
+3. Open the extension popup - the captured text will be loaded automatically
+
+### Settings
+
+Click the gear icon in the header to configure:
+- **API Key** - Your OpenAI API key (stored locally in Chrome storage)
+- **Model** - Choose between GPT-4o Mini (fast/cheap), GPT-4o (best quality), or GPT-3.5 Turbo
 
 ## File Structure
 
 ```
-rewordAI/
-├── manifest.json          # Extension configuration
-├── popup.html            # Main extension interface
-├── popup.js              # Popup functionality
-├── content.js            # Content script for web pages
-├── background.js         # Background service worker
-├── styles.css            # Extension styling
-├── icons/                # Extension icons
-│   ├── icon16.png
-│   ├── icon32.png
-│   ├── icon48.png
-│   ├── icon128.png
-│   └── icon.svg
-├── create_icons.html     # Icon generator
-└── README.md            # This file
+RewordAI/
+├── manifest.json      # Chrome extension manifest (Manifest V3)
+├── popup.html         # Extension popup interface
+├── popup.js           # Popup logic, OpenAI API calls, settings management
+├── styles.css         # UI styling
+├── background.js      # Service worker: context menu, message handling, API calls
+├── content.js         # Content script: text selection capture, keyboard shortcuts
+├── icons/
+│   ├── icon.svg       # Source icon (SVG)
+│   └── README.md      # Icon creation instructions
+└── README.md
 ```
 
-## Customization
+## How It Works
 
-### Adding AI API Integration:
+1. **Popup (`popup.js`)** sends text and the selected style to the OpenAI Chat Completions API
+2. Each style maps to a specific system prompt that instructs GPT how to rewrite the text
+3. **Background (`background.js`)** handles the context menu, stores captured text, and can also process rewording requests
+4. **Content script (`content.js`)** listens for `Ctrl+Shift+R` on web pages and sends selected text to the background script
+5. When the popup opens, it checks for captured text and loads it into the input area
 
-1. **Get an API Key**: Sign up for an AI service (OpenAI, Claude, etc.)
-2. **Update Background Script**: Modify `background.js` to make real API calls
-3. **Add API Key Storage**: Securely store your API key in extension storage
+## API Configuration
 
-Example API integration:
-```javascript
-// In background.js, replace handleRewording function
-async function handleRewording(text, style) {
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${apiKey}`,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            model: 'gpt-3.5-turbo',
-            messages: [{
-                role: 'user',
-                content: `Rewrite this text in a ${style} style: ${text}`
-            }]
-        })
-    });
-    
-    const data = await response.json();
-    return data.choices[0].message.content;
-}
-```
+The extension calls the [OpenAI Chat Completions API](https://platform.openai.com/docs/api-reference/chat):
 
-### Adding New Styles:
+| Parameter     | Value                           |
+|---------------|---------------------------------|
+| Endpoint      | `https://api.openai.com/v1/chat/completions` |
+| Default Model | `gpt-4o-mini`                   |
+| Temperature   | `0.7`                           |
+| Max Tokens    | `2048`                          |
 
-1. **Update HTML**: Add new options to the select dropdown in `popup.html`
-2. **Update JavaScript**: Add style logic in both `popup.js` and `background.js`
-3. **Update CSS**: Add any style-specific styling
+API errors are handled with user-friendly messages for common issues (invalid key, rate limits, insufficient credits).
 
-### Modifying the UI:
+## Writing Styles
 
-- **Colors**: Update the gradient colors in `styles.css`
-- **Layout**: Modify the HTML structure in `popup.html`
-- **Animations**: Add CSS animations and transitions
-
-## Development
-
-### Testing:
-- Use Chrome DevTools to debug the extension
-- Check the console for any errors
-- Test on different websites and text types
-
-### Debugging:
-- Open `chrome://extensions/`
-- Click "Inspect views" on your extension
-- Use the DevTools console to debug
-
-### Building for Production:
-1. Create proper icons
-2. Integrate with AI API
-3. Test thoroughly
-4. Package for Chrome Web Store
+| Style        | Description                                                |
+|--------------|------------------------------------------------------------|
+| Professional | Clear, concise business language without filler words      |
+| Casual       | Conversational tone, like talking to a friend              |
+| Creative     | Vivid, expressive language with metaphors and imagery      |
+| Formal       | Sophisticated vocabulary for official/academic contexts    |
+| Academic     | Scholarly, objective language for research and essays      |
+| Simplified   | Plain language with short sentences, easy for everyone     |
+| Persuasive   | Compelling, impactful language with call-to-action phrasing|
+| Friendly     | Warm, approachable, and encouraging tone                   |
 
 ## Permissions
 
-The extension requests these permissions:
-- `activeTab`: To access the current tab's content
-- `storage`: To save user preferences and text
+| Permission     | Purpose                                      |
+|----------------|----------------------------------------------|
+| `activeTab`    | Access the current tab to get selected text   |
+| `storage`      | Save API key, preferences, and captured text  |
+| `contextMenus` | "Reword with RewordAI" right-click menu item |
+| `notifications`| (Optional) Notify when text is captured       |
+
+Host permission for `https://api.openai.com/*` is required to make API calls.
+
+## Keyboard Shortcuts
+
+| Shortcut               | Context     | Action                         |
+|------------------------|-------------|--------------------------------|
+| `Ctrl/Cmd + Enter`     | Popup       | Reword the input text          |
+| `Ctrl/Cmd + Shift + R` | Any webpage | Capture selected text           |
 
 ## Browser Compatibility
 
-- Chrome 88+ (Manifest V3)
-- Edge 88+ (Chromium-based)
-- Other Chromium-based browsers
+- Google Chrome 88+ (Manifest V3)
+- Microsoft Edge 88+ (Chromium-based)
+- Other Chromium-based browsers (Brave, Vivaldi, Opera, Arc)
 
-## Contributing
+## Development
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+### Debugging
+
+1. Open `chrome://extensions/`
+2. Click **Inspect views: service worker** to debug `background.js`
+3. Right-click the extension popup and choose **Inspect** to debug `popup.js` and `styles.css`
+4. Open DevTools on any page to see `content.js` logs
+
+### Making Changes
+
+After editing files, go to `chrome://extensions/` and click the refresh icon on the RewordAI card to reload the extension.
+
+## Privacy
+
+- Your OpenAI API key is stored locally in Chrome's extension storage and is never sent anywhere except to OpenAI's API
+- Text is sent directly from your browser to OpenAI's API - no intermediary server
+- No analytics, tracking, or data collection of any kind
 
 ## License
 
-This project is open source and available under the MIT License.
-
-## Support
-
-For issues and questions:
-1. Check the troubleshooting section
-2. Review the code comments
-3. Open an issue on GitHub
-
----
-
-**Note**: This extension currently uses placeholder text processing. For production use, integrate with a real AI API service.
+MIT License. See [LICENSE](LICENSE) for details.

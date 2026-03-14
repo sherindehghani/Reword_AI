@@ -1,15 +1,20 @@
 {
   "manifest_version": 3,
-  "name": "RewordAI Extension",
+  "name": "RewordAI",
   "version": "1.0.0",
-  "description": "A Chrome extension for AI-powered text rewriting and enhancement",
+  "description": "AI-powered text rewording and enhancement using OpenAI GPT",
   "permissions": [
     "activeTab",
-    "storage"
+    "storage",
+    "contextMenus",
+    "notifications"
+  ],
+  "host_permissions": [
+    "https://api.openai.com/*"
   ],
   "action": {
     "default_popup": "popup.html",
-    "default_title": "RewordAI",
+    "default_title": "RewordAI - AI Text Enhancement",
     "default_icon": {
       "16": "icons/icon16.png",
       "32": "icons/icon32.png",
@@ -32,4 +37,4 @@
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   }
-} 
+}

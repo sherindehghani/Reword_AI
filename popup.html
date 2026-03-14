@@ -9,38 +9,127 @@
 <body>
     <div class="container">
         <header>
-            <h1>RewordAI</h1>
-            <p>AI-powered text enhancement</p>
+            <div class="header-row">
+                <div class="logo">
+                    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                        <rect width="28" height="28" rx="8" fill="rgba(255,255,255,0.2)"/>
+                        <path d="M8 10h12M8 14h8M8 18h10" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                        <circle cx="21" cy="18" r="4" fill="#fbbf24" opacity="0.9"/>
+                        <path d="M19.5 18l1 1 2-2" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div>
+                        <h1>RewordAI</h1>
+                        <p class="tagline">AI-powered text enhancement</p>
+                    </div>
+                </div>
+                <button id="settingsToggle" class="icon-btn" title="Settings">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                    </svg>
+                </button>
+            </div>
         </header>
-        
+
+        <!-- Settings Panel -->
+        <div id="settingsPanel" class="settings-panel hidden">
+            <div class="settings-content">
+                <h3>Settings</h3>
+                <div class="setting-group">
+                    <label for="apiKeyInput">OpenAI API Key</label>
+                    <div class="api-key-wrapper">
+                        <input type="password" id="apiKeyInput" placeholder="sk-..." autocomplete="off">
+                        <button id="toggleKeyVisibility" class="icon-btn small" title="Show/Hide">
+                            <svg id="eyeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <span class="hint">Get your key from <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com</a></span>
+                </div>
+                <div class="setting-group">
+                    <label for="modelSelect">Model</label>
+                    <select id="modelSelect">
+                        <option value="gpt-4o-mini">GPT-4o Mini (Fast & Cheap)</option>
+                        <option value="gpt-4o">GPT-4o (Best Quality)</option>
+                        <option value="gpt-3.5-turbo">GPT-3.5 Turbo (Legacy)</option>
+                    </select>
+                </div>
+                <div class="setting-actions">
+                    <button id="saveSettingsBtn" class="btn btn-primary btn-sm">Save Settings</button>
+                    <span id="settingsStatus" class="settings-status"></span>
+                </div>
+            </div>
+        </div>
+
         <main>
+            <!-- Input Section -->
             <div class="input-section">
-                <label for="textInput">Enter text to reword:</label>
-                <textarea id="textInput" placeholder="Paste your text here..."></textarea>
+                <div class="section-header">
+                    <label for="textInput">Input Text</label>
+                    <span id="charCount" class="char-count">0 chars</span>
+                </div>
+                <textarea id="textInput" placeholder="Paste or type your text here..." rows="5"></textarea>
             </div>
-            
+
+            <!-- Controls -->
             <div class="controls">
-                <select id="styleSelect">
-                    <option value="professional">Professional</option>
-                    <option value="casual">Casual</option>
-                    <option value="creative">Creative</option>
-                    <option value="formal">Formal</option>
-                </select>
-                <button id="rewordBtn">Reword Text</button>
+                <div class="style-selector">
+                    <select id="styleSelect">
+                        <option value="professional">Professional</option>
+                        <option value="casual">Casual</option>
+                        <option value="creative">Creative</option>
+                        <option value="formal">Formal</option>
+                        <option value="academic">Academic</option>
+                        <option value="simplified">Simplified</option>
+                        <option value="persuasive">Persuasive</option>
+                        <option value="friendly">Friendly</option>
+                    </select>
+                </div>
+                <button id="rewordBtn" class="btn btn-primary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="17 1 21 5 17 9"/>
+                        <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                        <polyline points="7 23 3 19 7 15"/>
+                        <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                    </svg>
+                    <span>Reword</span>
+                </button>
             </div>
-            
+
+            <!-- Output Section -->
             <div class="output-section">
-                <label for="textOutput">Reworded text:</label>
-                <textarea id="textOutput" readonly placeholder="Reworded text will appear here..."></textarea>
-                <button id="copyBtn" disabled>Copy to Clipboard</button>
+                <div class="section-header">
+                    <label for="textOutput">Result</label>
+                    <div class="output-actions">
+                        <button id="copyBtn" class="icon-btn small" disabled title="Copy to clipboard">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                            </svg>
+                        </button>
+                        <button id="clearBtn" class="icon-btn small" title="Clear all">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="3 6 5 6 21 6"/>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <textarea id="textOutput" readonly placeholder="Enhanced text will appear here..."></textarea>
             </div>
         </main>
-        
+
         <footer>
-            <div class="status" id="status"></div>
+            <div id="status" class="status"></div>
+            <div class="shortcuts-hint">
+                <span><kbd>Ctrl</kbd>+<kbd>Enter</kbd> Reword</span>
+                <span><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd> Capture</span>
+            </div>
         </footer>
     </div>
-    
+
     <script src="popup.js"></script>
 </body>
-</html> 
+</html>

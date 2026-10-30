@@ -1,3 +1,5 @@
+const MAX_INPUT_CHARS = 12000;
+
 document.addEventListener('DOMContentLoaded', () => {
     const textInput = document.getElementById('textInput');
     const textOutput = document.getElementById('textOutput');
@@ -75,6 +77,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
             e.preventDefault();
             rewordBtn.click();
+        } else if (e.key === 'Escape' && !settingsPanel.classList.contains('hidden')) {
+            e.preventDefault();
+            settingsPanel.classList.add('hidden');
         }
     });
 
@@ -168,7 +173,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateCharCount() {
         const count = textInput.value.length;
-        charCount.textContent = `${count} char${count !== 1 ? 's' : ''}`;
+        charCount.textContent = `${count.toLocaleString()} / ${MAX_INPUT_CHARS.toLocaleString()} chars`;
+        charCount.classList.toggle('over-limit', count > MAX_INPUT_CHARS);
     }
 
     function showStatus(message, type = '') {

@@ -121,7 +121,7 @@ RewordAI/
 │   ├── icon48.png       # 48×48 icon (generated)
 │   ├── icon128.png      # 128×128 icon (generated)
 │   └── README.md        # Icon instructions
-└── README.md            # This file
+├── README.md            # This file
 ```
 
 ---
@@ -143,14 +143,15 @@ RewordAI/
 | Endpoint      | `https://api.openai.com/v1/chat/completions`   |
 | Default Model | `gpt-4o-mini`                                  |
 | Temperature   | `0.7`                                          |
-| Max Tokens    | `2048`                                         |
+| Max Tokens    | `4096`                                         |
+| Max Input     | `12,000` characters                            |
 
 Error handling covers common API issues with user-friendly messages:
 
 | HTTP Status | Message Shown                                     |
 |-------------|---------------------------------------------------|
 | 401         | Invalid API key. Check your key in Settings.      |
-| 402         | Insufficient credits. Check your OpenAI billing.  |
+| 429 (quota) | Insufficient credits. Check your OpenAI billing.  |
 | 429         | Rate limit exceeded. Please wait a moment.        |
 
 ---
@@ -160,7 +161,8 @@ Error handling covers common API issues with user-friendly messages:
 | Shortcut               | Where       | Action                  |
 |------------------------|-------------|-------------------------|
 | `Ctrl/Cmd + Enter`     | Popup       | Reword the input text   |
-| `Ctrl/Cmd + Shift + R` | Any webpage | Capture selected text   |
+| `Alt + Shift + R`      | Any webpage | Capture selected text   |
+| `Esc`                  | Popup       | Close the Settings panel |
 
 ---
 
@@ -171,7 +173,7 @@ Error handling covers common API issues with user-friendly messages:
 | `activeTab`     | Access the current tab to get selected text         |
 | `storage`       | Save API key, preferences, and captured text        |
 | `contextMenus`  | "Reword with RewordAI" right-click menu item       |
-| `notifications` | Notify when text is captured from a page            |
+| `scripting`     | Read the selected text when you press the shortcut  |
 
 The `host_permissions` entry for `https://api.openai.com/*` allows the extension to make API calls to OpenAI.
 
@@ -193,7 +195,6 @@ The `host_permissions` entry for `https://api.openai.com/*` allows the extension
 |-------------------|-----------------------------------------------------------------------------|
 | Popup UI & JS     | Right-click the extension popup → **Inspect**                              |
 | Background worker | `chrome://extensions/` → click **"Inspect views: service worker"**         |
-| Content script    | Open DevTools on any page → Console tab                                    |
 | Network requests  | Open popup DevTools → **Network** tab → click Reword to see API calls      |
 
 ### Reloading After Changes
@@ -219,6 +220,12 @@ Email: [shirin.dehghani1996@gmail.com](mailto:shirin.dehghani1996@gmail.com)
 
 ---
 
+## Contributing
+
+Ideas, bug reports and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+---
+
 ## License
 
-MIT License
+[MIT](LICENSE)

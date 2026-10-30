@@ -424,3 +424,8 @@ textarea::-webkit-scrollbar-thumb {
 textarea::-webkit-scrollbar-thumb:hover {
     background: var(--text-secondary);
 }
+
+.char-count.over-limit {
+    color: #dc2626;
+    font-weight: 600;
+}

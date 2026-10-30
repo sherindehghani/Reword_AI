@@ -1,6 +1,5 @@
-const MAX_INPUT_CHARS = 12000;
-
 document.addEventListener('DOMContentLoaded', () => {
+    const MAX_INPUT_CHARS = 12000;
     const textInput = document.getElementById('textInput');
     const textOutput = document.getElementById('textOutput');
     const styleSelect = document.getElementById('styleSelect');

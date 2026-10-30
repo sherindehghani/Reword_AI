@@ -2,12 +2,12 @@
   "manifest_version": 3,
   "name": "RewordAI",
   "version": "1.0.0",
-  "description": "AI-powered text rewording and enhancement using OpenAI GPT",
+  "description": "AI-powered text rewording and enhancement using OpenAI",
   "permissions": [
     "activeTab",
     "storage",
     "contextMenus",
-    "notifications"
+    "scripting"
   ],
   "host_permissions": [
     "https://api.openai.com/*"
@@ -22,12 +22,6 @@
       "128": "icons/icon128.png"
     }
   },
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"]
-    }
-  ],
   "background": {
     "service_worker": "background.js"
   },
@@ -36,5 +30,14 @@
     "32": "icons/icon32.png",
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
+  },
+  "commands": {
+    "capture-selection": {
+      "suggested_key": {
+        "default": "Alt+Shift+R",
+        "mac": "Alt+Shift+R"
+      },
+      "description": "Capture selected text and open RewordAI"
+    }
   }
 }

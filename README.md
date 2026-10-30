@@ -214,7 +214,7 @@ The `host_permissions` entry for `https://api.openai.com/*` allows the extension
 
 ## Author
 
-**Shirin Dehghani**
+**Sherin Dehghani**
 Email: [shirin.dehghani1996@gmail.com](mailto:shirin.dehghani1996@gmail.com)
 
 ---

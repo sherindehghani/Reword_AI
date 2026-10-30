@@ -83,14 +83,14 @@
                                     </svg>
                                 </button>
                             </div>
-                            <span class="hint">Get your key from <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com</a></span>
+                            <span class="hint">Get your key from <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener">platform.openai.com</a></span>
                         </div>
                         <div class="setting-group">
                             <label for="modelSelect">Model</label>
                             <select id="modelSelect">
                                 <option value="gpt-4o-mini">GPT-4o Mini (Fast & Cheap)</option>
                                 <option value="gpt-4o">GPT-4o (Best Quality)</option>
-                                <option value="gpt-3.5-turbo">GPT-3.5 Turbo (Legacy)</option>
+                                <option value="gpt-4.1-mini">GPT-4.1 Mini</option>
                             </select>
                         </div>
                         <div class="setting-actions">
@@ -166,8 +166,12 @@
     </div>
 
     <script>
-        // Mock chrome.storage using localStorage
+        // Mock the chrome.* APIs used by background.js and popup.js (storage backed by localStorage)
         const storageData = JSON.parse(localStorage.getItem('rewordai') || '{}');
+        const persist = () => localStorage.setItem('rewordai', JSON.stringify(storageData));
+        const done = (cb, value) => { if (cb) cb(value); return Promise.resolve(value); };
+        const noopEvent = { addListener() {} };
+        const messageListeners = [];
         window.chrome = {
             storage: {
                 local: {
@@ -176,22 +180,32 @@
                         (Array.isArray(keys) ? keys : [keys]).forEach(k => {
                             if (storageData[k] !== undefined) result[k] = storageData[k];
                         });
-                        cb(result);
+                        return done(cb, result);
                     },
                     set(obj, cb) {
                         Object.assign(storageData, obj);
-                        localStorage.setItem('rewordai', JSON.stringify(storageData));
-                        if (cb) cb();
+                        persist();
+                        return done(cb);
                     },
                     remove(keys, cb) {
                         (Array.isArray(keys) ? keys : [keys]).forEach(k => delete storageData[k]);
-                        localStorage.setItem('rewordai', JSON.stringify(storageData));
-                        if (cb) cb();
+                        persist();
+                        return done(cb);
                     }
                 }
-            }
+            },
+            runtime: {
+                onInstalled: noopEvent,
+                onMessage: { addListener(fn) { messageListeners.push(fn); } },
+                sendMessage(msg) {
+                    return new Promise(resolve => messageListeners.forEach(fn => fn(msg, {}, resolve)));
+                }
+            },
+            contextMenus: { onClicked: noopEvent },
+            commands: { onCommand: noopEvent }
         };
     </script>
+    <script src="background.js"></script>
     <script src="popup.js"></script>
 </body>
 </html>

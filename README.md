@@ -6,13 +6,13 @@ A Chrome extension that uses the OpenAI API to reword and enhance text in multip
 
 ## Features
 
-- **OpenAI GPT Integration** — Powered by GPT-4o Mini, GPT-4o, or GPT-3.5 Turbo (configurable in Settings)
+- **OpenAI GPT Integration** — Powered by GPT-4o Mini, GPT-4o, or GPT-4.1 Mini (configurable in Settings)
 - **8 Writing Styles** — Professional, Casual, Creative, Formal, Academic, Simplified, Persuasive, Friendly
-- **Text Capture** — Select text on any webpage and send it to the extension with `Ctrl+Shift+R`
+- **Text Capture** — Select text on any webpage and send it to the extension with `Alt+Shift+R`
 - **Context Menu** — Right-click selected text and choose "Reword with RewordAI"
 - **Settings Panel** — Manage your API key and model selection directly from the popup
 - **Auto-save** — Input text and style preferences persist between sessions
-- **Keyboard Shortcuts** — `Ctrl+Enter` to reword, `Ctrl+Shift+R` to capture text from pages
+- **Keyboard Shortcuts** — `Ctrl+Enter` to reword, `Alt+Shift+R` to capture text from pages (customizable at `chrome://extensions/shortcuts`)
 - **Copy to Clipboard** — One-click copy of the reworded output
 - **Local Test Mode** — Preview the UI and test API calls without loading into Chrome
 
@@ -20,13 +20,9 @@ A Chrome extension that uses the OpenAI API to reword and enhance text in multip
 
 ## Quick Start
 
-### 1. Generate Icons
+### 1. Icons
 
-The extension requires PNG icons. A generator tool is included:
-
-1. Open `create_icons.html` in any browser (double-click the file)
-2. Click **"Generate & Download Icons"**
-3. Move the four downloaded files (`icon16.png`, `icon32.png`, `icon48.png`, `icon128.png`) into the `icons/` folder
+PNG icons are included in `icons/`. To regenerate them with a custom design, open `create_icons.html` in a browser and replace the files in `icons/`.
 
 ### 2. Get an OpenAI API Key
 
@@ -66,7 +62,7 @@ The extension requires PNG icons. A generator tool is included:
 ### Capture Text from Web Pages
 
 1. Select text on any webpage
-2. Press `Ctrl+Shift+R` to capture it, **or** right-click and choose **"Reword with RewordAI"**
+2. Press `Alt+Shift+R` to capture it (the popup opens with the text loaded), **or** right-click and choose **"Reword with RewordAI"**
 3. Open the extension popup — the captured text will be loaded automatically
 
 ### Settings
@@ -76,7 +72,7 @@ Click the gear icon in the header to configure:
 | Setting   | Options                                                                 |
 |-----------|-------------------------------------------------------------------------|
 | API Key   | Your OpenAI API key (stored locally in Chrome storage, never shared)    |
-| Model     | GPT-4o Mini (fast/cheap) · GPT-4o (best quality) · GPT-3.5 Turbo       |
+| Model     | GPT-4o Mini (fast/cheap) · GPT-4o (best quality) · GPT-4.1 Mini        |
 
 ---
 
@@ -113,10 +109,9 @@ Chrome-specific features (text capture, context menu) are not available in local
 RewordAI/
 ├── manifest.json        # Chrome extension manifest (Manifest V3)
 ├── popup.html           # Extension popup UI
-├── popup.js             # Popup logic, OpenAI API calls, settings
+├── popup.js             # Popup logic and settings
 ├── styles.css           # UI styling (CSS custom properties)
-├── background.js        # Service worker: context menu, message handling
-├── content.js           # Content script: text capture, keyboard shortcuts
+├── background.js        # Service worker: OpenAI API calls, context menu, capture shortcut
 ├── test-local.html      # Standalone local test page (mocks Chrome APIs)
 ├── create_icons.html    # PNG icon generator tool
 ├── icons/
@@ -133,10 +128,10 @@ RewordAI/
 
 ## How It Works
 
-1. **`popup.js`** sends the user's text and selected style to the [OpenAI Chat Completions API](https://platform.openai.com/docs/api-reference/chat)
+1. **`popup.js`** sends the user's text and selected style to the background service worker, which calls the [OpenAI Chat Completions API](https://platform.openai.com/docs/api-reference/chat)
 2. Each style maps to a specific **system prompt** that instructs GPT how to rewrite the text
-3. **`background.js`** creates the right-click context menu, stores captured text in `chrome.storage`, and can also process rewording requests
-4. **`content.js`** runs on every webpage — it listens for `Ctrl+Shift+R` and sends selected text to the background script
+3. **`background.js`** creates the right-click context menu and handles the `Alt+Shift+R` command, reading the selection from the active tab (via `activeTab` + `scripting`, so no script runs on every page) and storing it in `chrome.storage`
+4. All API calls happen in the service worker, so there is a single place for prompts and error handling
 5. When the popup opens, it checks for captured text and loads it into the input area automatically
 
 ---
